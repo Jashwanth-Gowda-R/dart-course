@@ -22,6 +22,7 @@ const allProducts = [
 //     exit
 //   end
 void main() {
+  var cart = Cart();
   while (true) {
     stdout
         .write('What do you want to do? (v)iew cart/(a)dd items/(c)heckout? ');
@@ -30,9 +31,12 @@ void main() {
     if (input == 'a') {
       var product = chooseProduct();
       if (product != null) {
-        print(product.displayName);
+        // print(product.displayName);
+        cart.addProduct(product);
+        print(cart);
       }
     } else if (input == 'v') {
+      print(cart);
     } else if (input == 'c') {
       exit(1);
     }
@@ -59,9 +63,39 @@ class Item {
   final int quantity;
 
   double get price => product.price * quantity;
+
+  @override
+  String toString() => '$quantity x ${product.name}: \$$price';
 }
 
-class Cart {}
+class Cart {
+  final Map<int, Item> _items = {};
+
+  void addProduct(Product product) {
+    final item = _items[product.id];
+    if (item == null) {
+      _items[product.id] = Item(product: product, quantity: 1);
+    } else {
+      _items[product.id] = Item(product: product, quantity: item.quantity + 1);
+    }
+  }
+
+  bool get isEmpty => _items.isEmpty;
+
+  double total() => _items.values
+      .map((item) => item.price)
+      .reduce((value, element) => value + element);
+
+  @override
+  String toString() {
+    if (_items.isEmpty) {
+      return 'Cart is empty';
+    }
+    final itemizedList =
+        _items.values.map((item) => item.toString()).join('\n');
+    return '------\n$itemizedList\nTotal: \$${total()}\n------';
+  }
+}
 
 Product? chooseProduct() {
   var products = allProducts.map((item) => item.displayName).join('\n');
