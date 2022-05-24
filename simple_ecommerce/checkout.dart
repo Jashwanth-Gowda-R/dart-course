@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:test/cartClass.dart';
+import 'package:test/productClass.dart';
+
 const allProducts = [
   Product(id: 1, name: 'apples', price: 1.60),
   Product(id: 2, name: 'bananas', price: 0.70),
@@ -45,63 +48,9 @@ void main() {
   }
 }
 
-class Product {
-  const Product({required this.id, required this.name, required this.price});
-  final int id;
-  final String name;
-  final double price;
-
-  String get displayName => '($initial)${name.substring(1)} : \$$price';
-  String get initial => name.substring(0, 1);
-}
-
-class Item {
-  Item({
-    required this.product,
-    required this.quantity,
-  });
-
-  final Product product;
-  final int quantity;
-
-  double get price => product.price * quantity;
-
-  @override
-  String toString() => '$quantity x ${product.name}: \$$price';
-}
-
-class Cart {
-  final Map<int, Item> _items = {};
-
-  void addProduct(Product product) {
-    final item = _items[product.id];
-    if (item == null) {
-      _items[product.id] = Item(product: product, quantity: 1);
-    } else {
-      _items[product.id] = Item(product: product, quantity: item.quantity + 1);
-    }
-  }
-
-  bool get isEmpty => _items.isEmpty;
-
-  double total() => _items.values
-      .map((item) => item.price)
-      .reduce((value, element) => value + element);
-
-  @override
-  String toString() {
-    if (_items.isEmpty) {
-      return 'Cart is empty';
-    }
-    final itemizedList =
-        _items.values.map((item) => item.toString()).join('\n');
-    return '------\n$itemizedList\nTotal: \$${total()}\n------';
-  }
-}
-
 Product? chooseProduct() {
   var products = allProducts.map((item) => item.displayName).join('\n');
-  stdout.write('Available products: \n$products\nYour Choice');
+  stdout.write('Available products: \n$products\nYour Choice  ');
   var input = stdin.readLineSync();
   print(input);
   for (var product in allProducts) {
