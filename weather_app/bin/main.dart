@@ -9,6 +9,8 @@ void main(List<String> arguments) async {
   final city = arguments.first;
   print('Your entered city is : $city');
   final api = WeatherApiClient();
-  final locationId = await api.getLocationId(city);
-  print(locationId);
+  // final locationId = await api.getLocationId(city);
+  // print(locationId);
+  final weather = api.getWeather(city);
+  print(weather);
 }
