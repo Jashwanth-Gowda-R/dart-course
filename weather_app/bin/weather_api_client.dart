@@ -15,9 +15,12 @@ class WeatherApiClient {
       throw Exception(
           'Error getting locationId for $city, ${response.statusCode}');
     }
-    final responseJson = jsonDecode(response.body) as List;
-    print('Returned data: $responseJson');
-    final locationId = responseJson.first['woeid'] as int;
+    final locationJson = jsonDecode(response.body) as List;
+    print('Returned data: $locationJson');
+    if (locationJson.isEmpty) {
+      throw WeatherApiException('No location found for: $city');
+    }
+    final locationId = locationJson.first['woeid'] as int;
     return locationId;
   }
 
