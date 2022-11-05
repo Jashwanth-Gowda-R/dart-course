@@ -13,10 +13,13 @@ void main() {
       var playermove;
       if (input == 'r') {
         playermove = moves.Rock;
+        input = "Rock";
       } else if (input == 'p') {
         playermove = moves.Paper;
+        input = "Paper";
       } else {
         playermove = moves.Scissors;
+        input = "Scissors";
       }
       var random = rng.nextInt(2);
       final aiMove = moves.values[random];
